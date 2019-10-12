@@ -6,6 +6,14 @@
 //  Copyright © 2019 Craig Scott. All rights reserved.
 //
 
+
+/*
+ Matrix struct that performs different matrix operations.
+ Uses single dimension vector to store indices, but accesses as 2D matrix
+ 
+ */
+
+//TO-DO : Add type checking for template
 #ifndef MOpps_hpp
 #define MOpps_hpp
 
@@ -26,7 +34,7 @@ struct InvalidMatrixProduct : public std :: exception{
 
 template <typename L>
 struct Matrix{
-public:
+private:
     size_t row = 0;
     size_t col = 0;
     bool transpose = false;
@@ -40,13 +48,16 @@ public:
             return *(begin + num);
         }
     };
-    
+public:
+
+    //Allows access to indices
     subscript_result operator[](const std::size_t num){
         if(transpose)
             return subscript_result{(entries.data() + num), transpose,col};
         return subscript_result{(entries.data() + num * col),transpose,col};
     }
     
+    //Assigning values
     Matrix<L> &operator=(std::initializer_list<std::initializer_list<L>> v){
         row = v.size();
         col = v.begin()->size();
@@ -63,6 +74,7 @@ public:
         return *this;
     }
     
+    //Dot between two matrices
     Matrix<L> operator*(Matrix<L> n){
         Matrix<L> result;
         result.entries.resize(this->r() * n.c());
