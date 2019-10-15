@@ -10,7 +10,6 @@
 /*
  Matrix struct that performs different matrix operations.
  Uses single dimension vector to store indices, but accesses as 2D matrix
- 
  */
 
 //TO-DO : Add type checking for template
@@ -22,6 +21,7 @@
 #include <vector>
 #include <string>
 #include <initializer_list>
+
 
 
 struct InvalidDotProduct : public std :: exception{
@@ -50,6 +50,16 @@ private:
     };
 public:
 
+    Matrix(size_t i, size_t j){
+        row = i;
+        col = j;
+        entries.resize(i * j);
+    }
+    
+    Matrix(){}
+    
+    ~Matrix(){}
+    
     //Allows access to indices
     subscript_result operator[](const std::size_t num){
         if(transpose)
@@ -105,6 +115,9 @@ public:
         return *this;
     }
 
+    bool validIndex(size_t i, size_t j){
+        return i > 0 && j > 0 && i < r() && j < c();
+    }
     
 };
 
